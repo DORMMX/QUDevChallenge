@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QUDevChallenge.WordFinder
+﻿namespace QUDevChallenge.WordFinder
 {
     public class WordFinder
     {
@@ -34,7 +28,7 @@ namespace QUDevChallenge.WordFinder
             return wordCounts.OrderByDescending(x => x.Value).Take(10).Select(x => x.Key);
         }
 
-        private char[,] ToCharMatrix(IEnumerable<string> matrix)
+        private static char[,] ToCharMatrix(IEnumerable<string> matrix)
         {
             var charMatrix = new char[matrix.Count(), matrix.First().Length];
             int row = 0;
@@ -62,18 +56,18 @@ namespace QUDevChallenge.WordFinder
             {
                 if (word.Length == 1)
                 {
-                    if (wordCounts.ContainsKey(wordComplete))
-                        wordCounts[wordComplete]++; // Found the word, increment count
+                    if (wordCounts.TryGetValue(wordComplete, out int value))
+                        wordCounts[wordComplete] = ++value;
                     else
                         wordCounts.Add(wordComplete, 1);
                 }
                 else
                 {
                     _visited[row, col] = true;
-                    FindWord(wordComplete, word.Substring(1), row + 1, col, wordCounts); // Search vertically
-                    FindWord(wordComplete, word.Substring(1), row - 1, col, wordCounts); // Search vertically
-                    FindWord(wordComplete, word.Substring(1), row, col + 1, wordCounts); // Search horizontally
-                    FindWord(wordComplete, word.Substring(1), row, col - 1, wordCounts); // Search horizontally
+                    FindWord(wordComplete, word[1..], row + 1, col, wordCounts);
+                    FindWord(wordComplete, word[1..], row - 1, col, wordCounts);
+                    FindWord(wordComplete, word[1..], row, col + 1, wordCounts);
+                    FindWord(wordComplete, word[1..], row, col - 1, wordCounts);
                     _visited[row, col] = false;
                 }
             }
