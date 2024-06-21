@@ -6,8 +6,8 @@ namespace UTWordFinder
     public class Matrix
     {
         [TestMethod]
-        public void TestMethod1()
-        {
+        public void FindWord()
+        {          
             Assert.IsTrue(1 == 1);
         }
     }
